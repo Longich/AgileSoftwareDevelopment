@@ -1,52 +1,50 @@
 package main.java.refactoring;
 
 public class PrimeGenerator {
-    private static boolean[] isCrossed;
+    private static boolean[] crossedOut;
     private static int[] result;
     
     public static int[] generatePrimes(int maxValue) {
         if (maxValue < 2) {
             return new int[0];
         } else {
-            initializeArrayOfIntegers(maxValue);
+            uncrossIntegersUpTo(maxValue);
             crossOutMultiples();
             putUncrossedIntegersIntoResult();
             return result;
         }
     }
 
-    private static void initializeArrayOfIntegers(int maxValue) {
-        isCrossed = new boolean[maxValue + 1];
-        for (int i = 0; i < isCrossed.length; i++) {
-            isCrossed[i] = false;
-            
-            //既知の非素数を取り除く
-            isCrossed[0] = isCrossed[1] = true;
+    private static void uncrossIntegersUpTo(int maxValue) {
+        crossedOut = new boolean[maxValue + 1];
+        for (int i = 2; i < crossedOut.length; i++) {
+            crossedOut[i] = false;
         }
     }
+    
     private static void crossOutMultiples() {
-        int maxPrimeFactor = calcMaxPrimeFactor();
-        for (int i = 2; i < maxPrimeFactor; i++) {
+        int limit = determineIterationLimit();
+        for (int i = 2; i <= limit; i++) {
             if (notCrossed(i)) {
                 crossOutMultiplesOf(i);
             }
         }
     }
 
-    private static int calcMaxPrimeFactor() {
-        double maxPrimeFactor = Math.sqrt(isCrossed.length) + 1;
-        return (int) maxPrimeFactor;
+    private static int determineIterationLimit() {
+        double iterationLimit = Math.sqrt(crossedOut.length);
+        return (int) iterationLimit;
     }
     
     private static boolean notCrossed(int i) {
-        return isCrossed[i] == false;
+        return crossedOut[i] == false;
     }
     
     private static void crossOutMultiplesOf(int i) {
         for (int multiple = 2 * i;
-             multiple < isCrossed.length;
+             multiple < crossedOut.length;
              multiple += i) {
-            isCrossed[multiple] = true;
+            crossedOut[multiple] = true;
         }
     }
 
@@ -54,7 +52,7 @@ public class PrimeGenerator {
     private static void putUncrossedIntegersIntoResult() {
         result = new int[numberOfUncrossedIntegers()];
         
-        for (int j = 0, i = 2; i < isCrossed.length; i++) {
+        for (int j = 0, i = 2; i < crossedOut.length; i++) {
             if (notCrossed(i)) {
                 result[j++] = i;
             }
@@ -63,7 +61,7 @@ public class PrimeGenerator {
     
     private static int numberOfUncrossedIntegers() {
         int count = 0;
-        for (int i = 2; i < isCrossed.length; i++) {
+        for (int i = 2; i < crossedOut.length; i++) {
             if (notCrossed(i)) {
                 count++;
             }

@@ -26,4 +26,22 @@ public class TestGeneratePrimes extends TestCase {
         assertEquals(centArray.length, 25);
         assertEquals(centArray[24], 97);
     }
+    
+    public void testExhaustive() {
+        for (int i = 2; i < 500; i++) {
+            verifyPrimeList(PrimeGenerator.generatePrimes(i));
+        }
+    }
+    
+    private void verifyPrimeList(int[] list) {
+        for (int i = 0; i < list.length; i++) {
+            verifyPrime(list[i]);
+        }
+    }
+    
+    private void verifyPrime(int n) {
+        for (int factor = 2; factor < n; factor++) {
+            assertTrue(n % factor != 0);
+        }
+    }
 }
