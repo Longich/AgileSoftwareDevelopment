@@ -1,17 +1,14 @@
 package test.java.refactoring;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import main.java.refactoring.PrimeGenerator;
 
-public class TestGeneratePrimes extends TestCase {
-    public static void main(String[] args) {
-        junit.textui.TestRunner.main(new String[] {"TestGeneratePrimes"});
-    }
+public class TestGeneratePrimes{
     
-    public TestGeneratePrimes(String name) {
-        super(name);
-    }
-    
+    @Test
     public void testPrimes() {
         int[] nullArray = PrimeGenerator.generatePrimes(0);
         assertEquals(nullArray.length, 0);
